@@ -25,6 +25,7 @@ class PostController extends Controller
 //        aval validate mishe bad mire to input
             $inputs=request()->validate([
             'title'=>'required|min:8|max:255',
+            'category_id'=>'required',
                 'post_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
                 'body'=>'required'
         ]);
@@ -77,6 +78,7 @@ class PostController extends Controller
     public function update(Post $post){
         $inputs=request()->validate([
             'title'=>'required|min:8|max:255',
+            'category_id'=>'required',
             'post_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
             'body'=>'required'
         ]);

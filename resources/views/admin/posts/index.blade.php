@@ -19,6 +19,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Owner</th>
+                            <th>category_id</th>
                             <th>Title</th>
                             <th>Image</th>
                             <th>Created At</th>
@@ -30,6 +31,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Owner</th>
+                            <th>category_id</th>
                             <th>Title</th>
                             <th>Image</th>
                             <th>Created At</th>
@@ -42,6 +44,7 @@
                         <tr>
                             <td>{{$post->id}}</td>
                             <td>{{$post->user->name}}</td>
+                            <td>{{$post->category_id}}</td>
                             <td><a href="{{route('post.edit',$post->id)}}">{{$post->title}}</a></td>
                             <td>
                                 <img height="40px" src="{{$post->post_image}}" alt="">

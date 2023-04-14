@@ -7,6 +7,10 @@
                         <label for="">Title</label>
                         <input type="text" name="title" class="form-control" id="" aria-describedby="" placeholder="Enter Title">
                     </div>
+            <div class="form-group">
+                {!! Form::label('Category','Category:') !!}
+                {!! Form::select('category_id' , array(1=>'Php',0=>'javascript') , null ,['class'=>'form-control']) !!}
+            </div>
                     <div class="form-group">
                         <label for="">File</label>
                         <input type="file" name="post_image" class="form-control-file" id="post_image">

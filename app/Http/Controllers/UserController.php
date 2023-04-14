@@ -42,7 +42,6 @@ class UserController extends Controller
             'name'=>['required','string','min:3','max:255'],
             'email'=>['required','email','max:255'],
             'avatar'=>['file'],
-            'password'=>['max:255','min:6','confirmed'],
         ]);
         if (\request('avatar')){
             $path=$inputs['avatar']=\request('avatar')->store('images');
