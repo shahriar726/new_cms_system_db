@@ -8,15 +8,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::put('admin/users/{user}/update',[App\Http\Controllers\UserController::class, 'update'])->name('user.profile.update');
 
+
 Route::delete('admin/users/{user}/destroy',[App\Http\Controllers\UserController::class, 'destroy'])->name('user.destroy');
 
 Route::middleware(['role:admin','auth'])->group(function(){
 //ma in middleawre ra to route ezafe kardim
     Route::get('admin/users',[App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+    Route::get('/admin/users/create',[App\Http\Controllers\UserController::class, 'create'])->name('user.create');
+    Route::post('/admin/users', [App\Http\Controllers\UserController::class, 'store'])->name('post.store');
 
-    Route::put('admin/users/{user}attach',[App\Http\Controllers\UserController::class, 'attach'])->name('user.role.attach');
-    Route::put('admin/users/{user}detach',[App\Http\Controllers\UserController::class, 'detach'])->name('user.role.detach');
 
+    Route::put('admin/users/{user}/attach',[App\Http\Controllers\UserController::class, 'attach'])->name('user.role.attach');
+    Route::put('admin/users/{user}/detach',[App\Http\Controllers\UserController::class, 'detach'])->name('user.role.detach');
 });
 //onaii ke can mitoonan view ro bebinan va user ra bebinan
 Route::middleware(['can:view,user'])->group(function(){

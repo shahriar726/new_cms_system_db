@@ -20,6 +20,7 @@
                                     <th>Avatar</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Role</th>
                                     <th>Registered date</th>
                                     <th>Updated profile date</th>
                                     <th>Delete</th>
@@ -33,6 +34,7 @@
                                     <th>Avatar</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Role</th>
                                     <th>Registered date</th>
                                     <th>Updated profile date</th>
                                     <th>Delete</th>
@@ -49,8 +51,13 @@
                                         </td>
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
+{{--                                        <td>{{$user->roles->role_id}}</td>--}}
+                                                @foreach($user->roles as $user_roles)
+                                                <td>{{$user_roles->name}}</td>
+                                                @endforeach
                                         <td>{{$user->created_at->diffForHumans()}}</td>
                                         <td>{{$user->updated_at->diffForHumans()}}</td>
+
                                         <td>
                                             <form action="{{route('user.destroy',$user->id)}}" method="post">
                                                 @csrf

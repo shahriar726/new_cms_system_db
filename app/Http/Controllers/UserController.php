@@ -15,6 +15,22 @@ class UserController extends Controller
         $users=User::all();
         return view('admin.users.index',compact('users'));
     }
+    public function create(User $user){
+        $roles=Role::all();
+        return view('admin.users.create',compact('roles','user'));
+    }
+    public function store(Request $request,User $user){
+            $inputs= \request()->validate([
+
+            'username'=>['required','string','max:255','alpha_dash'],
+            'name'=>['required','string','min:3','max:255'],
+            'email'=>['required','email','max:255'],
+            'password'=>['max:255','min:6','confirmed'],
+        ]);
+        $user->create($inputs);
+        session()->flash('user-created','User has been created'. $user->name);
+        return back();
+    }
 
     public function show(User $user){
         $roles=Role::all();
@@ -26,7 +42,7 @@ class UserController extends Controller
             'name'=>['required','string','min:3','max:255'],
             'email'=>['required','email','max:255'],
             'avatar'=>['file'],
-//            'password'=>['max:255','min:6','confirmed'],
+            'password'=>['max:255','min:6','confirmed'],
         ]);
         if (\request('avatar')){
             $path=$inputs['avatar']=\request('avatar')->store('images');

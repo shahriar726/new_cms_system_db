@@ -17,21 +17,23 @@ class PostController extends Controller
     public function create(){
         $this->authorize('create',Post::class);
         return view('admin.posts.create');
+
     }
     public function store(Request $request){
+
         $this->authorize('create',Post::class);
 //        aval validate mishe bad mire to input
-     $inputs=request()->validate([
-        'title'=>'required|min:8|max:255',
-            'post_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
-            'body'=>'required'
+            $inputs=request()->validate([
+            'title'=>'required|min:8|max:255',
+                'post_image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+                'body'=>'required'
         ]);
         if (request('post_image')){
             //mire mige age post image dar dardastres bood bia befres to file images
            $path= $inputs['post_image']=request('post_image')->store('images');
             $inputs['post_image']='/storage/'. $path;
         }
-        //on useri ke bahash login kardi ra postesho bezar
+//        //on useri ke bahash login kardi ra postesho bezar
         auth()->user()->posts()->create($inputs);
         $request->session()->flash('post-create-message','post with title was created  '.$inputs['title']);
         return redirect()->route('post.index');
