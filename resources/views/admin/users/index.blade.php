@@ -52,6 +52,7 @@
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
 {{--                                        <td>{{$user->roles ?$user->roles :''}}</td>--}}
+
                                                 @foreach($user->roles as $user_roles)
                                                 <td>{{$user_roles->name}}</td>
                                                 @endforeach
