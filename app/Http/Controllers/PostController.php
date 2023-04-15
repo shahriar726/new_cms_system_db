@@ -55,6 +55,7 @@ class PostController extends Controller
         return view('admin.posts.index',compact('posts'));
     }
     public function edit(Post $post){
+        $categories=Category::pluck('name','id')->all();
 //        $this->authorize('view',$post);
         //or
 //        if (auth()->user()->can('view',$post)){
@@ -62,7 +63,7 @@ class PostController extends Controller
 //        }
 //ino to url darim dige find shode khodesh
 //        $posts=Post::findOrFail($post);
-        return view('admin.posts.edit',['post'=>$post]);
+        return view('admin.posts.edit',['post'=>$post,'categories'=>$categories]);
     }
 
     public function destroy(Post $post,Request $request){
@@ -91,6 +92,7 @@ class PostController extends Controller
         }
         $post->title =$inputs['title'];
         $post->body =$inputs['body'];
+        $post->category_id =$inputs['category_id'];
         $this->authorize('update',$post);
         auth()->user()->posts()->save($post);
         //or
