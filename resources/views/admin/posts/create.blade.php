@@ -9,7 +9,7 @@
                     </div>
             <div class="form-group">
                 {!! Form::label('Category','Category:') !!}
-                {!! Form::select('category_id' , array(1=>'Php',0=>'javascript') , null ,['class'=>'form-control']) !!}
+                {!! Form::select('category_id' , [''=>'Choose Categories'] + $categories , null ,['class'=>'form-control']) !!}
             </div>
                     <div class="form-group">
                         <label for="">File</label>

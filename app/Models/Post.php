@@ -23,4 +23,7 @@ class Post extends Model
     public function getPostImageAttribute($value){
             return asset($value);
     }
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }

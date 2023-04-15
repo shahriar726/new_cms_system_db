@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -16,7 +17,8 @@ class PostController extends Controller
     }
     public function create(){
         $this->authorize('create',Post::class);
-        return view('admin.posts.create');
+        $categories=Category::pluck('name','id')->all();
+        return view('admin.posts.create',compact('categories'));
 
     }
     public function store(Request $request){

@@ -44,7 +44,7 @@
                         <tr>
                             <td>{{$post->id}}</td>
                             <td>{{$post->user->name}}</td>
-                            <td>{{$post->category_id}}</td>
+                            <td>{{$post->category_id ? $post->category->name : 'uncategorized'}}</td>
                             <td><a href="{{route('post.edit',$post->id)}}">{{$post->title}}</a></td>
                             <td>
                                 <img height="40px" src="{{$post->post_image}}" alt="">
