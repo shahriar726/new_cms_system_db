@@ -8,7 +8,7 @@
                 <h1>Edit Role {{$role->name}}</h1>
                 <form method="post" action="{{route('roles.update',$role->id)}}">
                     @csrf
-                    @method('PUT ')
+                    @method('PUT')
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" class="form-control" value="{{$role->name}}" >

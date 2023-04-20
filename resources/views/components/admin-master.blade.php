@@ -58,6 +58,9 @@
 {{--        x-admin.sidebar. mire to folder admin bad mire to folder sidebar--}}
         <x-admin.sidebar.admin-sidebar-posts-links>
         </x-admin.sidebar.admin-sidebar-posts-links>
+
+        <x-admin.sidebar.admin-sidebar-categories-links>
+        </x-admin.sidebar.admin-sidebar-categories-links>
        @if(auth()->user()->userHasRole('Admin'))
         <x-admin.sidebar.admin-sidebar-users-links>
         </x-admin.sidebar.admin-sidebar-users-links>

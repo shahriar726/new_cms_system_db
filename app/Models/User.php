@@ -57,6 +57,10 @@ class User extends Authenticatable
     //in user chand post dard
         return $this->hasMany(Post::class);
     }
+    public function post(){
+
+        return $this->hasOne(Post::class);
+    }
     public function permissions(){
 
         return $this->belongsToMany(Permission::class);
@@ -65,6 +69,10 @@ class User extends Authenticatable
 
         return $this->belongsToMany(Role::class);
     }
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
+
     public function userHasRole($role_name){
         foreach ($this->roles as $role){
             if (Str::lower($role_name) == Str::lower($role->name)){
@@ -74,6 +82,7 @@ class User extends Authenticatable
         }
 
     }
+
 
 
 }
