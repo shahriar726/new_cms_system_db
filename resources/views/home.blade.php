@@ -23,6 +23,7 @@
         </div>
         @endforeach
 
+
         <!-- Pagination -->
         <ul class="pagination justify-content-center mb-4">
             <li class="page-item">
@@ -32,6 +33,24 @@
                 <a class="page-link" href="#">Newer &rarr;</a>
             </li>
         </ul>
+
+    @endsection
+    @section('category')
+        <h5 class="card-header">Categories</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    @foreach($categories as $category)
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#">{{$category->name}}</a>
+                        </li>
+                    </ul>
+                    @endforeach
+                </div>
+
+            </div>
+        </div>
 
     @endsection
 

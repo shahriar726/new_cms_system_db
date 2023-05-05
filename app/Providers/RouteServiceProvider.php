@@ -55,6 +55,15 @@ class RouteServiceProvider extends ServiceProvider
             }
         });
         Route::group([
+            'middleware' => 'web',
+            'namespace' => $this->namespace,
+        ], function ($router) {
+            $routes = glob(base_path('routes/web/category.php'));
+            foreach ($routes as $route) {
+                require $route;
+            }
+        });
+        Route::group([
             'middleware' => ['web','auth','role:admin'],
             'namespace' => $this->namespace,
         ], function ($router) {

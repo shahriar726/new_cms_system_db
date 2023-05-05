@@ -8,6 +8,7 @@
             <h6 class="collapse-header">Posts</h6>
             <a class="collapse-item" href="{{route('post.create')}}">Create Post</a>
             <a class="collapse-item" href="{{route('post.index')}}">View All Post</a>
+            <a class="collapse-item" href="{{route('comments.index')}}"> All Comments</a>
         </div>
     </div>
 </li>
