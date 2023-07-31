@@ -1,5 +1,6 @@
 <x-admin-master>
     @section('content')
+        @include('admin.includes.tinyeditor')
             <h1>create</h1>
         <form method="post" action="{{route('posts.store')}}" enctype="multipart/form-data">
                 @csrf

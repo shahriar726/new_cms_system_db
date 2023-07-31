@@ -15,12 +15,17 @@ return new class extends Migration
     {
         Schema::create('comment_replies', function (Blueprint $table) {
             $table->id();
-            $table->integer('comment_id')->constrained()->onDelete('cascade');
+            $table->biginteger('comment_id')->unsigned()->index();
             $table->string('author');
             $table->string('email');
             $table->text('body');
             $table->timestamps();
 
+            $table->foreign('comment_id')
+                ->references('id')
+                ->on('comments')
+                ->onDelete('cascade')
+                ->onDelete('cascade');
         });
     }
 

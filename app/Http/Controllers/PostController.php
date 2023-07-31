@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -11,19 +12,20 @@ use Illuminate\Support\Facades\Session;
 class PostController extends Controller
 {
 //in id ke to home.blade.php dadi miad negah mikone in id male in poste va match mikone ba oon posti ke  mikhahi
-    public function show(Post $post){
-//      $post=  Post::findOrFail($id);
-        return view('blog-post',compact('post'));
+    public function show($id){
+         $post=Post::findOrFail($id);
+        $comments=$post->comments()->whereIsActive(1)->get();
+//        Post::where('Category_id',$Category_id);
+        $categories=Category::all();
+        return view('blog-post',compact('post','comments','categories'));
     }
     public function create(){
-        $this->authorize('create',Post::class);
         $categories=Category::pluck('name','id')->all();
         return view('admin.posts.create',compact('categories'));
 
     }
     public function store(Request $request){
 
-        $this->authorize('create',Post::class);
 //        aval validate mishe bad mire to input
             $inputs=request()->validate([
             'title'=>'required|min:8|max:255',
@@ -36,9 +38,10 @@ class PostController extends Controller
            $path= $inputs['post_image']=request('post_image')->store('images');
             $inputs['post_image']='/storage/'. $path;
         }
+
 //        //on useri ke bahash login kardi ra postesho bezar
         auth()->user()->posts()->create($inputs);
-        $request->session()->flash('post-create-message','post with title was created  '.$inputs['title']);
+        $request->session()->flash('post-create-message','post with title was created'.  $inputs['title']);
         return redirect()->route('post.index');
 //        $requestData= $request->all();
 //        $filename=time().$request->file('post_image')->getClientOriginalName();
@@ -67,7 +70,6 @@ class PostController extends Controller
     }
 
     public function destroy(Post $post,Request $request){
-        $this->authorize('delete',$post);
         //harkasi nyad har posti ra pak kone har user post khodesha pak kone
 //        if (auth()->user()->id !==$post->user_id)
         $post->delete();
@@ -93,12 +95,11 @@ class PostController extends Controller
         $post->title =$inputs['title'];
         $post->body =$inputs['body'];
         $post->category_id =$inputs['category_id'];
-        $this->authorize('update',$post);
         auth()->user()->posts()->save($post);
         //or
         //miad hamoon shakhsi ke sakhte ino update mikone
 //        $post->save();
-        session()->flash('post-updated-message','post with title was updated  '.$inputs['title']);
+        session()->flash('post-updated-message','post with title was update'.$inputs['title']);
         return redirect()->route('post.index');
     }
 

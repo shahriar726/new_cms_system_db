@@ -1,6 +1,7 @@
 <x-admin-master>
     @section('content')
         <h1>Edit a Post</h1>
+        @include('admin.includes.tinyeditor')
         <form method="post" action="{{route('post.update',$post->id)}}" enctype="multipart/form-data">
             @csrf
             @method('PATCH')

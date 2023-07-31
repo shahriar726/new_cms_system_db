@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable ,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -61,25 +62,14 @@ class User extends Authenticatable
 
         return $this->hasOne(Post::class);
     }
-    public function permissions(){
-
-        return $this->belongsToMany(Permission::class);
-    }
-    public function roles(){
-
-        return $this->belongsToMany(Role::class);
-    }
     public function category(){
         return $this->belongsTo(Category::class);
     }
 
-    public function userHasRole($role_name){
-        foreach ($this->roles as $role){
-            if (Str::lower($role_name) == Str::lower($role->name)){
-                return true;
-            }
-            return false;
-        }
+    public function getGravatarAttribute(){
+
+        $hash=md5(strtolower(trim($this->attributes['email'])));
+        return "https://en.gravatar.com/avatar/$hash";
 
     }
 

@@ -64,7 +64,7 @@ class RouteServiceProvider extends ServiceProvider
             }
         });
         Route::group([
-            'middleware' => ['web','auth','role:admin'],
+            'middleware' => ['web','auth'],
             'namespace' => $this->namespace,
         ], function ($router) {
             $routes = glob(base_path('routes/web/roles.php'));
@@ -73,7 +73,7 @@ class RouteServiceProvider extends ServiceProvider
             }
         });
         Route::group([
-            'middleware' => ['web','auth','role:admin'],
+            'middleware' => ['web','auth'],
             'namespace' => $this->namespace,
         ], function ($router) {
             $routes = glob(base_path('routes/web/permissions.php'));

@@ -22,6 +22,8 @@
                             <th>category_id</th>
                             <th>Title</th>
                             <th>Image</th>
+                            <th>View-Post</th>
+                            <th>View-Comments</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>Delete </th>
@@ -34,6 +36,8 @@
                             <th>category_id</th>
                             <th>Title</th>
                             <th>Image</th>
+                            <th>View-Post</th>
+                            <th>View-Comments</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>Delete </th>
@@ -49,6 +53,9 @@
                             <td>
                                 <img height="40px" src="{{$post->post_image}}" alt="">
                             </td>
+                            <td><a href="{{route('post',$post->id)}}">view Post</a></td>
+                            <td><a href="{{route('comments.show',$post->id)}}">view Comment</a></td>
+{{--                            <td><a href="{{route('replies.show',$post->id)}}">view reply</a></td>--}}
                             <td>{{$post->created_at->diffForHumans()}}</td>
                             <td>{{$post->updated_at}}</td>
                             <td>
@@ -62,20 +69,30 @@
 
                              </td>
                            </tr>
+
                         @endforeach
                         </tbody>
+
 
                     </table>
                 </div>
             </div>
         </div>
 
-{{--                {{$posts->links()}}--}}
 
+
+{{--                {{$posts->links()}}--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-sm-6 col-sm-offset-5 pagination">--}}
+{{--                {{$posts->render()}}--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         @endsection
+
         @section('scripts')
         <!-- Page level plugins -->
+
             <script src="{{asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
             <script src="{{asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 

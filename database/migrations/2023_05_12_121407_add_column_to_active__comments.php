@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
+            $table->integer('is_active')->default(0);
             //
         });
     }
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('comments', function (Blueprint $table) {
             //
+            $table->dropColumn('is_active');
         });
     }
 };

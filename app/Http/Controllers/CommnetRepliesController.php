@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
+use App\Models\CommentReply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommnetRepliesController extends Controller
 {
@@ -34,9 +37,28 @@ class CommnetRepliesController extends Controller
      */
     public function store(Request $request)
     {
+
         //
     }
 
+    public function createReply(Request $request){
+
+        $user =Auth::user();
+        $inputs= request()->validate([
+            'body'=>'required|min:8|max:255']);
+        $data=[
+            'comment_id'=>$request->comment_id,
+            'author'=>$user->name,
+            'email'=>$user->email,
+            'body'=>$request->body
+        ];
+
+        CommentReply::create($data);
+        $request->session()->flash('comment_massage','Your massage has been submitted and is waiting moderation');
+        return redirect()->back();
+        //
+
+    }
     /**
      * Display the specified resource.
      *
@@ -46,6 +68,9 @@ class CommnetRepliesController extends Controller
     public function show($id)
     {
         //
+       $comment= Comment::findOrFail($id);
+        $replies=$comment->replies;
+        return view('admin.comments.replies.show',compact('replies'));
     }
 
     /**
@@ -68,6 +93,8 @@ class CommnetRepliesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        CommentReply::findOrFail($id)->update($request->all());
+        return redirect()->back();
         //
     }
 
@@ -79,6 +106,10 @@ class CommnetRepliesController extends Controller
      */
     public function destroy($id)
     {
+        CommentReply::findOrFail($id)->delete();
+        return redirect()->back();
         //
     }
+
+
 }

@@ -1,68 +1,51 @@
 <x-admin-master>
     @section('content')
-        <div class="row">
-            @if(session()->has('permission-deleted'))
-                <div class="alert alert-danger">
-                    {{session('permission-deleted')}}
-                </div>
-            @endif
-            <div class="col-sm-3">
-                <form method="post" action="{{route('permissions.store')}}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror">
 
-                        <div>
-                            @error('name')
-                            <span><strong >{{$message}}</strong></span>
-                            @enderror
-                        </div>
+        <div class="py-12 w-full">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
+                    <div class="flex justify-end p-2">
+                        <a href="{{route('admin.permissions.create')}}" class="px-4 py-2 btn-success btn hover:bg-green-500 rounded-md">Create Permission</a>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Create Permission</button>
-                </form>
-            </div>
-            <div class="col-sm-9">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Permissions</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="users_table" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th>Delete</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th>Delete</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                @foreach($permissions as $permission)
-                                    <tr>
-                                    <td>{{$permission->id}}</td>
-                                    <td><a href="{{route('permissions.edit',$permission->id)}}">{{$permission->name}}</a></td>
-                                    <td>{{$permission->slug}}</td>
-                                    <td>
-                                        <form action="{{route('permissions.destroy',$permission->id)}}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" >Delete</button>
-                                        </form>
-                                    </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                    <div class="flex flex-col">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th scope="col" class="relative px-6 py-3">
+                                                <span class="sr-only">Edit</span>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach ($permissions as $permission)
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        {{ $permission->name }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="flex justify-end">
+                                                        <div class="flex space-x-2">
+
+                                                            <form class="px-4 py-2  hover:bg-red-700 text-white rounded-md" method="POST" action="{{route('admin.permissions.destroy',$permission->id)}}" onsubmit="return confirm('Are you sure?');">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href="{{route('admin.permissions.edit',$permission->id)}}" class=" btn btn-primary ">Edit</a>
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                            </form>                </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

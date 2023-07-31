@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('comment_replies', function (Blueprint $table) {
+        Schema::table('posts', function (Blueprint $table) {
             //
-            $table->integer('is_active')->default(0);
-
+            $table->string('slug')->nullable();
         });
     }
 
@@ -27,9 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('comment_replies', function (Blueprint $table) {
+        Schema::table('posts', function (Blueprint $table) {
             //
-            $table->dropColumn('is_active');
+            $table->dropColumn('slug');
         });
     }
 };

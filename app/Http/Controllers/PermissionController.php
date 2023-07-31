@@ -2,58 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
     //
     public function index(){
-
-        return view('admin.permissions.index',['permissions'=>Permission::all()]);
+        $permissions=Permission::all();
+        return view('admin.permissions.index',compact('permissions'));
     }
-    public function store(){
-        request()->validate([
-            'name'=>'required',
-        ]);
-        Permission::create([
-            'name'=>Str::ucfirst(request('name')),
-            'slug'=>Str::of(Str::lower(request('name')))->slug('-'),
-        ]);
-        return back();
-    }
+    public function  create(){
 
+        return view('admin.permissions.create');
+
+    }
+    public function  store(Request $request){
+
+        $validated= $request->validate([
+            'name'=>['required','min:3']
+        ]);
+        Permission::create($validated);
+        return to_route('admin.permissions.index');
+    }
     public function edit(Permission $permission){
-
-        return view('admin.permissions.edit',['permission'=>$permission,'permissions'=>Permission::all()]);
+        $roles =Role::all();
+        return view('admin.permissions.edit',compact('permission','roles'));
 
     }
-    public function update(Permission $permission){
-        $permission->name=Str::ucfirst(request('name'));
-        $permission->slug=Str::of(Str::lower(request('name')))->slug('-');
-        if ($permission->isDirty('name')){
-            //age chizi bara update darim in session ro neshoon bede
-            session()->flash('permission-updated','Permission Updated :'.$permission->name);
-            $permission->save();
-        }else{
-            //age update nakardim chizi vase update pas nadarim session ro avaz mikonim
-            session()->flash('permission-updated','Nothing to Updated');
-
-        }
-        return back();
-//            return redirect('admin.roles.index');
+    public function update(Request $request, Permission $permission){
+        $validated= $request->validate([
+            'name'=>['required','min:3']
+        ]);
+        $permission->update($validated);
+        return to_route('admin.permissions.index');
     }
     public function destroy(Permission $permission){
+
         $permission->delete();
-        session()->flash('permission-deleted','Deleted Permission was successfully'.$permission->name);
         return back();
     }
-    public  function  delete(Permission $permission){
-        $permission->delete();
-        session()->flash('permission-deleted','Deleted Permission was successfully'.$permission->name);
-        return redirect('/admin/permissions');
+    public function assignRole(Request $request ,Permission $permission){
+        if ($permission->hasRole($request->role)){
+            return back()->with('message','role exists');
+        }
+        $permission->assignRole($request->role);
+        return back()->with('message','role assigned');
+
     }
+    public function removeRole(Permission $permission,Role $role){
 
-
+        if ($permission->hasRole($role)){
+            $permission->removeRole($role);
+            return back()->with('message','role remove');
+        }
+        return back()->with('message','role not exist');
+    }
 }

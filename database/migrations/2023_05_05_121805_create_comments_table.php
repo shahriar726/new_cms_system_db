@@ -15,12 +15,18 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->integer('post_id')->constrained()->onDelete('cascade');
+            $table->biginteger('post_id')->unsigned()->index();
             $table->string('author');
             $table->string('email');
             $table->text('body');
             $table->timestamps();
 
+
+            $table->foreign('post_id')
+                ->references('id')
+                ->on('posts')
+                ->onDelete('cascade')
+                ->onDelete('cascade');
         });
     }
 

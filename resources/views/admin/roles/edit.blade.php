@@ -1,100 +1,75 @@
 <x-admin-master>
     @section('content')
-        <div class="row">
-            <div class="col-sm-6">
-                @if(session()->has('role-updated'))
-                    <div class="alert alert-success">{{session('role-updated')}}</div>
-                    @endif
-                <h1>Edit Role {{$role->name}}</h1>
-                <form method="post" action="{{route('roles.update',$role->id)}}">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{$role->name}}" >
+        <div class="py-12 w-full">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
+                    <div class="flex p-2">
+                        <a href="{{ route('admin.roles.index') }}"
+                           class="px-4 py-2  btn btn-outline-primary text-slate-100 rounded-md">Role Index</a>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </form>
+                    <div class="flex flex-col p-2 bg-slate-100">
+                        <div class="space-y-8 divide-y divide-gray-200 w-1/2 mt-10">
+                            <form method="POST" action="{{ route('admin.roles.update', $role->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="sm:col-span-6">
+                                    <label for="name" class="block text-sm font-medium text-gray-700"> Role name </label>
+                                    <div class="mt-1">
+                                        <input type="text" id="name" name="name" value="{{ $role->name }}"
+                                               class="block w-full appearance-none bg-white border border-gray-400 rounded-md py-2 px-3 text-base leading-normal transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
+                                    </div>
+                                    @error('name')
+                                    <span class="text-red-400 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="sm:col-span-6 pt-5">
+                                    <button type="submit"
+                                            class="px-4 btn-success btn hover:bg-green-700 rounded-md">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-2 bg-slate-100">
+                        <h2 class="text-2xl font-semibold">Role Permissions</h2>
+                        <div class="flex space-x-2 mt-4 p-2">
+                            @if ($role->permissions)
+                                @foreach ($role->permissions as $role_permission)
+                                    <form class="px-4 py-2  hover:bg-red-700 text-white rounded-md" method="POST"
+                                          action="{{ route('admin.roles.permissions.revoke', [$role->id, $role_permission->id]) }}"
+                                          onsubmit="return confirm('Are you sure?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">{{ $role_permission->name }}</button>
+                                    </form>
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="max-w-xl mt-6">
+                            <form method="POST" action="{{ route('admin.roles.permissions', $role->id) }}">
+                                @csrf
+                                <div class="sm:col-span-6">
+                                    <label for="permission"
+                                           class="block text-sm font-medium text-gray-700">Permission</label>
+                                    <select id="permission" name="permission" autocomplete="permission-name"
+                                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        @foreach ($permissions as $permission)
+                                            <option value="{{ $permission->name }}">{{ $permission->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('name')
+                                <span class="text-red-400 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="sm:col-span-6 pt-5">
+                            <button type="submit"
+                                    class="px-4 py-2 btn btn-success hover:bg-green-700 rounded-md">Assign</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                @if($permissions->isNotEmpty())
-            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Permissions</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="users_table" width="100%" cellspacing="0">
-                                            <thead>
-                                            <tr>
-                                                <th>options</th>
-                                                <th>Id</th>
-                                                <th>Name</th>
-                                                <th>Slug</th>
-                                                <th>Attach</th>
-                                                <th>Detach</th>
-                                            </tr>
-                                            </thead>
-                                            <tfoot>
-                                            <tr>
-                                                <th>options</th>
-                                                <th>Id</th>
-                                                <th>Name</th>
-                                                <th>Slug</th>
-                                                <th>Attach</th>
-                                                <th>Detach</th>
-                                            </tr>
-                                            </tfoot>
-                                            <tbody>
-                                                @foreach($permissions as $permission)
-                                            <tr>
-                                                <td><input type="checkbox"
-                                                           @foreach($role->permissions as $role_permission)
-                                                           @if($role_permission->slug == $permission->slug)
-                                                           checked
-                                                        @endif
-                                                        @endforeach
-                                                    ></td>
-                                                <td>{{$permission->id}}</td>
-                                                <td>{{$permission->name}}</td>
-                                                <td>{{$permission->slug}}</td>
-                                                <td>
-                                                    <form method="post"  action="{{route('role.permission.attach',$role->id)}}">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="permission" value="{{$permission->id}}">
-                                                        <button class="btn btn-primary"
-                                                                @if($role->permissions->contains($permission))
-                                                                disabled
-                                                            @endif
-                                                        >
-                                                            Attach</button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="post"  action="{{route('role.permission.detach',$role->id)}}">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="permission" value="{{$permission->id}}">
-                                                        <button class="btn btn-danger"
-                                                                @if(!$role->permissions->contains($permission))
-                                                                disabled
-                                                            @endif
 
-                                                        >Detach</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                @endif
-        </div>
-        </div>
         @endsection
 </x-admin-master>

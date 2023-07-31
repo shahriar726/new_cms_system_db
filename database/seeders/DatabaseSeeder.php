@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        $this->call(RoleSeeder::class);
+        $this->call(AdminSeeder::class);
 //mitoni ham inja factory ra benevisi
 //            DB::table('users')->insert([
 //
@@ -24,10 +27,10 @@ class DatabaseSeeder extends Seeder
 //
 //            ]);
         //mitoni har tabe ra be raveshhae zyadii taqqir dahi
-         User::factory(10)->create()->each(function ($user){
-//$user yek nemone sakhtim
-            $user->posts()->save(Post::factory()->make());
-         });
+//         User::factory(10)->create()->each(function ($user){
+////$user yek nemone sakhtim
+//            $user->posts()->save(Post::factory()->make());
+//         });
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

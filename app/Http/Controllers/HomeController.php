@@ -27,6 +27,6 @@ class HomeController extends Controller
     {
          $posts= Post::all();
          $categories=Category::all();
-        return view('home',['posts'=>$posts,'categories'=>$categories]);
+        return view('home',compact('posts','categories'));
     }
 }

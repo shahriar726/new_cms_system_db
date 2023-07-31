@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,7 @@ class PostCommentsController extends Controller
             'avatar'=>$user->avatar,
             'body'=>$request->body
         ];
+        $inputs= request()->validate(['body'=>'required|min:8|max:255',]);
         Comment::create($data);
         $request->session()->flash('comment_massage','Your massage has been submitted and is waiting moderation');
           return redirect()->back();
@@ -60,7 +62,10 @@ class PostCommentsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post=Post::find($id);
+        $comments=$post->comments;
+        return view('admin.comments.show',compact('comments'));
+
     }
 
     /**
@@ -84,6 +89,8 @@ class PostCommentsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        Comment::findOrFail($id)->update($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -94,6 +101,8 @@ class PostCommentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Comment::findOrFail($id)->delete();
+       return redirect()->back();
+            //
     }
 }
